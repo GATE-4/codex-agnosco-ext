@@ -1,26 +1,39 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  let disposable = vscode.commands.registerCommand(
+    "codexAgnosco.explainFunction",
+    async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) return;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "codex-agnosco" is now active!');
+      const filePath = editor.document.uri.fsPath;
+      const lineNumber = editor.selection.active.line;
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('codex-agnosco.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Codex Agnosco!!!!!!444');
-	});
+      console.log(`FilePath: ${filePath}`);
+      console.log(`Linenumber: ${lineNumber}`);
 
-	context.subscriptions.push(disposable);
+      const response = await fetch("http://localhost:5242/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filePath, lineNumber }),
+      });
+
+      const result: any = await response.json();
+      showResultInEditor("Codex-Agnosco: " + result.explanation);
+    }
+  );
+
+  context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+export async function showResultInEditor(result: string) {
+  const doc = await vscode.workspace.openTextDocument({
+    content: result,
+    language: "csharp", // optional: enables syntax highlighting for code
+  });
+  await vscode.window.showTextDocument(doc, {
+    preview: false, // keeps it open when you open another file
+  });
+}
+
