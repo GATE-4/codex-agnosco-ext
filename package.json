@@ -14,10 +14,45 @@
   "contributes": {
     "commands": [
       {
-        "command": "codexAgnosco.explainFunction",
-        "title": "Codex-Agnosco explain"
+        "command": "codexAgnosco.explainNewTab",
+        "title": "Codex-Agnosco: Explain new tab"
+      },
+      {
+        "command": "codexAgnosco.explainSideBar",
+        "title": "Codex-Agnosco: Explain sidebar"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "codexAgnosco.explainNewTab",
+          "group": "navigation"
+        },
+        {
+          "command": "codexAgnosco.explainSideBar",
+          "group": "navigation"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codexAgnosco",
+          "title": "Codex Agnosco",
+          "icon": "$(book)"
+        }
+      ]
+    },
+    "views": {
+      "codexAgnosco": [
+        {
+          "type": "webview",
+          "id": "codexAgnosco.sidebarView",
+          "name": "Code Analysis",
+          "icon": "$(book)"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
