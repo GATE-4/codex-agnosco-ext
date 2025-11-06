@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\CodexAgnoscoWebApi.props" />
-</Project>

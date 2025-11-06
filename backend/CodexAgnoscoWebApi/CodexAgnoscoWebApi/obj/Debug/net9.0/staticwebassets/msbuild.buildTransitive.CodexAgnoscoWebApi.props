@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\CodexAgnoscoWebApi.props" />
-</Project>
