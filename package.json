@@ -14,10 +14,45 @@
   "contributes": {
     "commands": [
       {
-        "command": "codex-agnosco.helloWorld",
-        "title": "Hello World"
+        "command": "codexAgnosco.explainNewTab",
+        "title": "Codex-Agnosco: Explain new tab"
+      },
+      {
+        "command": "codexAgnosco.explainSideBar",
+        "title": "Codex-Agnosco: Explain sidebar"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "codexAgnosco.explainNewTab",
+          "group": "navigation"
+        },
+        {
+          "command": "codexAgnosco.explainSideBar",
+          "group": "navigation"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codexAgnosco",
+          "title": "Codex Agnosco",
+          "icon": "$(book)"
+        }
+      ]
+    },
+    "views": {
+      "codexAgnosco": [
+        {
+          "type": "webview",
+          "id": "codexAgnosco.sidebarView",
+          "name": "Code Analysis",
+          "icon": "$(book)"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -34,16 +69,19 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.103.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
+    "@types/vscode": "^1.103.0",
     "@typescript-eslint/eslint-plugin": "^8.42.0",
     "@typescript-eslint/parser": "^8.42.0",
-    "eslint": "^9.34.0",
-    "esbuild": "^0.25.9",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.9.2",
     "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.25.9",
+    "eslint": "^9.34.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
   }
 }
