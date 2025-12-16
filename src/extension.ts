@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 
-// Sidebar provider class
 class CodexAgnoscoViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "codexAgnosco.sidebarView";
   private _view?: vscode.WebviewView;
@@ -55,7 +54,6 @@ class CodexAgnoscoViewProvider implements vscode.WebviewViewProvider {
   }
 
   private _getHtmlForWebview(content: string): string {
-    // Escape HTML to prevent XSS
     const escapedContent = content
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -97,7 +95,6 @@ class CodexAgnoscoViewProvider implements vscode.WebviewViewProvider {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  // Register the sidebar view provider
   const provider = new CodexAgnoscoViewProvider(context.extensionUri);
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
@@ -106,8 +103,7 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  // Command for new tab
-  let disposable = vscode.commands.registerCommand(
+  let newTab = vscode.commands.registerCommand(
     "codexAgnosco.explainNewTab",
     async () => {
       const editor = vscode.window.activeTextEditor;
@@ -136,8 +132,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  // Command for sidebar
-  let disposable2 = vscode.commands.registerCommand(
+  let sideBar = vscode.commands.registerCommand(
     "codexAgnosco.explainSideBar",
     async () => {
       const editor = vscode.window.activeTextEditor;
@@ -151,11 +146,9 @@ export function activate(context: vscode.ExtensionContext) {
       console.log(`FilePath: ${filePath}`);
       console.log(`Linenumber: ${lineNumber}`);
 
-      // Reveal the sidebar view first
       await vscode.commands.executeCommand("codexAgnosco.sidebarView.focus");
 
       try {
-        // Show loading message
         await vscode.window.withProgress(
           {
             location: vscode.ProgressLocation.Notification,
@@ -179,8 +172,8 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  context.subscriptions.push(disposable);
-  context.subscriptions.push(disposable2);
+  context.subscriptions.push(newTab);
+  context.subscriptions.push(sideBar);
 }
 
 export async function showResultInEditor(result: string) {
